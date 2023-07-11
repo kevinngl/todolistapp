@@ -24,7 +24,7 @@ interface TaskDao {
 
     fun insertAll(vararg tasks: Task)
     @Query("DELETE FROM tasks WHERE id = :taskId")
-    suspend fun deleteTask(taskId: Int)
+    suspend fun deleteTask(taskId: Task)
     @Query("UPDATE tasks SET isCompleted = :completed WHERE id = :taskId")
     suspend fun updateCompleted(taskId: Int, completed: Boolean)
     
