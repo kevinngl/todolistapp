@@ -30,16 +30,12 @@ class TaskRepository(private val tasksDao: TaskDao) {
     //TODO 4 : Use FilterUtils.getFilteredQuery to create filterable query
     //TODO 5 : Build PagedList with configuration
     fun getTasks(filter: TasksFilterType): LiveData<PagedList<Task>> {
-        val query = FilterUtils.getFilteredQuery(filter)
-        val config = PagedList.Config.Builder()
+        val filteredQuery = FilterUtils.getFilteredQuery(filter)
+        val configBuilder = PagedList.Config.Builder().setEnablePlaceholders(PLACEHOLDERS)
             .setPageSize(PAGE_SIZE)
-            .setEnablePlaceholders(PLACEHOLDERS)
             .build()
-        val dataSourceFactory = tasksDao.getTasks(query)
-        return LivePagedListBuilder(dataSourceFactory, config)
-            .build()
+        return LivePagedListBuilder(tasksDao.getTasks(filteredQuery), configBuilder).build()
     }
-
 
     fun getTaskById(taskId: Int): LiveData<Task> {
         return tasksDao.getTaskById(taskId)

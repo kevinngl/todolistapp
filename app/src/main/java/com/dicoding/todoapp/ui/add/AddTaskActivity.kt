@@ -7,12 +7,15 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.todoapp.R
+import com.dicoding.todoapp.data.Task
 import com.dicoding.todoapp.utils.DatePickerFragment
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
     private var dueDateMillis: Long = System.currentTimeMillis()
+    private lateinit var viewModel: AddTaskViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,14 @@ class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListen
         return when (item.itemId) {
             R.id.action_save -> {
                 //TODO 12 : Create AddTaskViewModel and insert new task to database
+                val edtTitle = findViewById<TextInputEditText>(R.id.add_ed_title)
+                val edtDesc = findViewById<TextInputEditText>(R.id.add_ed_description)
+                val title = edtTitle.text.toString()
+                val desc = edtDesc.text.toString()
+
+                val newTask = Task(0, title, desc, dueDateMillis, false)
+                viewModel.addData(newTask)
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
